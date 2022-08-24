@@ -1,0 +1,33 @@
+---
+import { GOOGLE_ANALYTICS_TRACKING_ID } from "@commons/config";
+import Head from "@components/base/head.astro";
+
+export interface IBaseLayoutProps {
+  content: {
+    title: string;
+    description: string;
+  }
+}
+
+const {
+  content: { title, description }
+} = Astro.props as IBaseLayoutProps
+---
+
+<html>
+  <head>
+    <Head title={title} description={description} />
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src={`https://www.googletagmanager.com/gtag/js?id=${GOOGLE_ANALYTICS_TRACKING_ID}`}></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag("js", new Date());
+      gtag("config", GOOGLE_ANALYTICS_TRACKING_ID);
+    </script>
+  </head>
+  <bod>
+    <slot />
+  </bod>
+</html>

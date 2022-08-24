@@ -1,0 +1,82 @@
+---
+import Head from "@components/base/head-blog.astro";
+import { AUTHOR } from "@commons/config";
+
+export interface IBaseLayoutProps {
+  content: {
+    title: string;
+    description: string;
+    image?: string;
+    imageAuthor?: string;
+    imageAuthorUrl?: string;
+    authorId: string;
+    category?: string;
+  }
+}
+
+const {
+  content: { 
+    title,
+    description,
+    image,
+    imageAuthor,
+    imageAuthorUrl,
+    authorId,
+    category
+  }
+} = Astro.props as IBaseLayoutProps
+
+const author: any = AUTHOR[authorId]
+---
+
+<html>
+  <head>
+    <Head title={title} description={description} />
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src={`https://www.googletagmanager.com/gtag/js?id=${import.meta.env.PUBLIC_GOOGLE_ANALYTICS_TRACKING_ID}`}></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag("js", new Date());
+      gtag("config", import.meta.env.PUBLIC_GOOGLE_ANALYTICS_TRACKING_ID);
+    </script>
+  </head>
+  <body>
+    <div class="container-1100 mx-auto grid grid-cols-12 gap-5">
+      <article class="col-span-12 md:col-span-8 px-10 md:px-16 md:pb-10 md:border-x">
+        <div class="flex items-center py-5">
+          <div class="mr-5">
+            <img src={author.profilePicUrl} class="w-12 rounded-full" />
+          </div>
+          <div class="text-sm">
+            <div class="font-semibold">{author.fullname}</div>
+            <div class="space-x-5 flex items-center text-xs">
+              <div>{category}</div>
+              <div>5 mins read</div>
+            </div>
+          </div>
+        </div>
+        
+        <img src={image} class="w-full" />
+        {imageAuthor != "" &&
+          <div class="text-center mt-2 text-sm text-gray-500">
+            Photo by <a href={imageAuthorUrl} target="_blank" class="underline">{imageAuthor}</a>
+          </div>
+        }
+
+        <h1 class="text-4xl font-bold mt-5">{title}</h1>
+        <h3 class="text-2xl text-gray-500 mt-5">{description}</h3>
+
+        <slot />
+      </article>
+      <div class="col-span-12 md:col-span-4 p-10 md:p-10">
+        <div class="space-y-3">
+          <img src={author.profilePicUrl} class="w-32 rounded-full" />
+          <div class="font-bold">{author.fullname}</div>
+          <div class="text-sm text-gray-500">{author.description}</div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

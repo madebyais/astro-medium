@@ -1,0 +1,9 @@
+@import "global.css";
+
+p {
+  letter-spacing: -0.003em;
+  line-height: 32px;
+  margin-top: 2em;
+  margin-bottom: -0.46em;
+  font-size: 20px;
+}
