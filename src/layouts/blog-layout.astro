@@ -1,7 +1,10 @@
 ---
 import Head from "@components/base/head-blog.astro";
-import { AUTHOR, SITE_TITLE } from "@commons/config";
-import StringUtil from "src/utils/string";
+import { SiteConfig } from "@commons/config";
+import StringUtil from "@utils/string";
+import { BlogAuthors, IBlogAuthor } from "@commons/blog/author";
+import { BlogPrimaryMenu, IBlogMenu } from "@commons/blog/menu";
+import { BlogCategories } from "@commons/blog/category";
 
 export interface IBaseLayoutProps {
   title: string;
@@ -11,12 +14,13 @@ export interface IBaseLayoutProps {
   imageAuthorUrl?: string;
   authorId: string;
   category?: string;
+  publishDate?: string;
 }
 
 const { frontmatter }: any = Astro.props;
 
 const content: IBaseLayoutProps = frontmatter as IBaseLayoutProps;
-const author: any = AUTHOR[content.authorId];
+const author: any = BlogAuthors[content.authorId] as IBlogAuthor;
 const readingTime: number = new StringUtil().calculateReadingTime(Astro.props.rawContent(), 265);
 ---
 
@@ -40,11 +44,16 @@ const readingTime: number = new StringUtil().calculateReadingTime(Astro.props.ra
   <body>
     <div class="px-10 md:px-0 py-4 border-b">
       <div class="container-1100 mx-auto flex justify-between items-center">
-        <div class="font-bold text-xl">
-          <a href="/">{SITE_TITLE}</a>
+        <div>
+          <a href="/" class="font-bold text-xl block">{SiteConfig.title}</a>
+          {SiteConfig.isShowDescription &&
+            <div class="text-sm">{SiteConfig.description}</div>
+          }
         </div>
-        <div class="flex space-x-3">
-
+        <div class="flex space-x-10">
+          {BlogPrimaryMenu.map((menu: IBlogMenu, i: number) => (
+            <a href={menu.path}>{menu.label}</a>
+          ))}
         </div>
       </div>
     </div>
@@ -53,11 +62,12 @@ const readingTime: number = new StringUtil().calculateReadingTime(Astro.props.ra
       <div class="col-span-12 md:col-span-8 px-10 md:px-16 md:pb-10 md:border-x">
         <div class="flex items-center py-5">
           <div class="mr-5">
-            <img src={author.profilePicUrl} class="w-12 rounded-full" />
+            <img src={author.picUrl} class="w-12 rounded-full" />
           </div>
           <div class="text-sm">
             <div class="font-semibold">{author.fullname}</div>
             <div class="space-x-5 flex items-center text-xs">
+              <div>{content.publishDate}</div>
               <div>{readingTime} mins read</div>
               <div class="capitalize"><a href={`/blog/${content.category}`}>{content.category}</a></div>
             </div>
@@ -82,10 +92,19 @@ const readingTime: number = new StringUtil().calculateReadingTime(Astro.props.ra
         </article>
       </div>
       <div class="col-span-12 md:col-span-4 p-10 md:p-10">
-        <div class="space-y-3">
-          <img src={author.profilePicUrl} class="w-32 rounded-full" />
+        <div class="space-y-3 mb-10">
+          <img src={author.picUrl} class="w-32 rounded-full" />
           <div class="font-bold">{author.fullname}</div>
           <div class="text-sm text-gray-500">{author.description}</div>
+          <br/>
+          <a href={`mailto:${author.email}`} class="font-semibold text-white bg-black px-4 py-2 text-xs rounded">Drop me a message</a>
+        </div>
+
+        <div class="border-t pt-5">
+          <div class="mb-2 font-bold">Categories ({BlogCategories.length})</div>
+          {BlogCategories.map((category: string, i: number) => (
+            <a href={`/blog/${category}`} class="capitalize block text-gray-500 hover:text-black">{category}</a>
+          ))}
         </div>
       </div>
     </div>
