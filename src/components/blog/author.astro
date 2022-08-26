@@ -1,0 +1,18 @@
+---
+import type { IBlogAuthor } from "@commons/blog/author";
+
+const {
+  picUrl,
+  fullname,
+  description,
+  email
+} = Astro.props as IBlogAuthor;
+---
+
+<div class="space-y-3 mb-10">
+  <img src={picUrl} class="w-32 rounded-full" />
+  <div class="font-bold">{fullname}</div>
+  <div class="text-sm text-gray-500">{description}</div>
+  <br/>
+  <a href={`mailto:${email}`} class="font-semibold text-white bg-black px-4 py-2 text-xs rounded">Drop me a message</a>
+</div>

@@ -1,0 +1,8 @@
+---
+import { BlogCategories } from "@commons/blog/category";
+---
+
+<div class="mb-2 font-bold">Categories ({BlogCategories.length})</div>
+{BlogCategories.map((category: string, i: number) => (
+  <a href={`/blog/${category}`} class="capitalize block text-gray-500 hover:text-black">{category}</a>
+))}
