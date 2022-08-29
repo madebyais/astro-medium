@@ -8,7 +8,7 @@ import BlogAuthor from "@components/blog/author.astro";
 import { BlogAuthors, IBlogAuthor } from "@commons/blog/author";
 import StringUtil from "@utils/string";
 
-export interface IBaseLayoutProps {
+interface IBaseLayoutProps {
   title: string;
   description: string;
   image?: string;

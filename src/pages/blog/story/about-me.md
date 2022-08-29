@@ -3,7 +3,7 @@ layout: "@layouts/blog-layout.astro"
 title: About Me
 description: This is just a dummy me.
 authorId: ais
-category: tutorial
+category: Story
 draft: false
 ---
 
